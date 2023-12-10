@@ -14,6 +14,14 @@ public class Usuario {
         this.contraseña = contraseña;
     }
 
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
     public String getContraseña() {
         return contraseña;
     }
@@ -21,15 +29,5 @@ public class Usuario {
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
     }
-
-    public String getNombreUsuario() {
-        return nombreUsuario;
-    }
-    public String setNombreUsuario(){
-        this.nombreUsuario = nombreUsuario;
-        return null;
-    }
-    public boolean verificarContraseña(String contraseña) {
-        return this.contraseña.equals(contraseña);
-    }
 }
+

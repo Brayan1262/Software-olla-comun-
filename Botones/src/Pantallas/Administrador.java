@@ -4,16 +4,20 @@
  */
 package Pantallas;
 
+import DAO.Registrarcliente;
 import javax.swing.table.DefaultTableModel;
 import Entidades.Cliente;
-
+import Entidades.Administrador1;
+import conexion.ConexionBDDS;
 public class Administrador extends javax.swing.JFrame {
  Cliente c = new Cliente("","",0,0);
+ ConexionBDDS con1 = new ConexionBDDS();
+ Administrador1 ad = new Administrador1(0,0);
  DefaultTableModel dtm = new DefaultTableModel();
- 
+ Registrarcliente consulta = new Registrarcliente();
     public Administrador() {
     initComponents();
-    String [] titulo = new String [] {"Nombre","Apellido","DNI","Monto pagado","Precio"};
+    String [] titulo = new String [] {"Nombre","Apellido","DNI","Monto pagado","Precio","Vuelto"};
     dtm.setColumnIdentifiers(titulo);
     tblDatos.setModel(dtm);
     }
@@ -32,7 +36,8 @@ void agregar() {
         montopago = Double.parseDouble(jtxtMonto.getText());
         c.setMontopago(montopago);
         precio = Double.parseDouble(jtxtPrecio.getText());
-        Object[] fila = {c.getNombre(), c.getApellido(), c.getDNI(), c.getMontopago(),precio};
+        ad.setPrecio(precio);
+        Object[] fila = {c.getNombre(), c.getApellido(), c.getDNI(), c.getMontopago(),ad.getPrecio(),ad.getVuelto()};
         dtm.addRow(fila);
     } catch (NumberFormatException e) {
         System.err.println("Error: Ingrese valores numéricos para DNI y Montopago");
@@ -59,20 +64,24 @@ void actualizar()
     dtm.setValueAt(jtxtMonto.getText(),fila, 3);
     dtm.setValueAt(jtxtPrecio.getText(),fila, 4);
 }
-void calcular() {
+public double calcular() {
         double precio;
         double vuelto;
         double monto;
         try {
             monto = Double.parseDouble(jtxtMonto.getText());
+            c.setMontopago(monto);
             precio = Double.parseDouble(jtxtPrecio.getText());
+            ad.setPrecio(precio);
             vuelto = monto - precio;
+            ad.setVuelto(vuelto);
             jtxtVuelto.setText(String.valueOf(vuelto));
         } catch (NumberFormatException e) {
             // Manejar la excepción si la entrada no es un número válido
             jtxtVuelto.setText("Error");
         }
-    }
+     return 0;
+}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -137,13 +146,15 @@ void calcular() {
         tblDatos.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         tblDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
             }
         ));
         jScrollPane1.setViewportView(tblDatos);
@@ -185,7 +196,7 @@ void calcular() {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(BtnActualizar1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BtnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 104, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(BtnLimpiar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BtnEliminar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -219,8 +230,8 @@ void calcular() {
                         .addComponent(jtxtVuelto, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jtxtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(BtnCalcular, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 455, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 504, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -236,7 +247,7 @@ void calcular() {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 3, Short.MAX_VALUE))
         );
 
         pack();
@@ -244,24 +255,24 @@ void calcular() {
 
     private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
     agregar();
+    consulta.Registrar(c, ad);
     }//GEN-LAST:event_BtnGuardarActionPerformed
 
     private void BtnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnEliminarActionPerformed
-      eliminar();
+    eliminar();
     }//GEN-LAST:event_BtnEliminarActionPerformed
 
     private void BtnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLimpiarActionPerformed
-      limpiar();
+    limpiar();
     }//GEN-LAST:event_BtnLimpiarActionPerformed
 
     private void BtnActualizar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnActualizar1ActionPerformed
-     actualizar();
+    actualizar();
     }//GEN-LAST:event_BtnActualizar1ActionPerformed
 
     private void BtnCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCalcularActionPerformed
     calcular();     
     }//GEN-LAST:event_BtnCalcularActionPerformed
-  
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

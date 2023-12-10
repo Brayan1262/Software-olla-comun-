@@ -10,7 +10,6 @@ public class Cliente {
     private String apellido;
     private int DNI;
     private double montopago;
-
     public Cliente(String nombre, String apellido, int DNI, double montopago) {
         this.nombre = nombre;
         this.apellido = apellido;

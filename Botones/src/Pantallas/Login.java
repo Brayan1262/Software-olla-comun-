@@ -5,17 +5,10 @@
 package Pantallas;
 
 import DAO.Usuario;
-import conexion.conexionBDDS;
 import javax.swing.JOptionPane;
-
-
-
-
+import conexion.ConexionBDDS;
 public class Login extends javax.swing.JFrame {
-    
-    conexionBDDS con = new conexionBDDS();
-    
-    
+ConexionBDDS con;   
     public Login() {
     initComponents();
     }
@@ -105,20 +98,20 @@ private void iniciarSesion() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BtnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnIngresarActionPerformed
-    Usuario u = new Usuario("","");
-    u.nombreUsuario = jtxtNombre.getText();
-    u.contraseña = jtxtContraseña.getText();
-    
-    if (u.nombreUsuario.isEmpty() || u.contraseña.isEmpty()){
-        JOptionPane.showMessageDialog(null,"Algun campo esta vacio");
-    } else { if (u.nombreUsuario.equals("usuario")&& u.contraseña.equals("contraseña"));
-        JOptionPane.showMessageDialog(null,"Bienvenido");
-        Administrador ad = new Administrador();
-        ad.setVisible(true);
-        this.dispose();
-    }
-    }//GEN-LAST:event_BtnIngresarActionPerformed
+   Usuario u = new Usuario("","");
+   u.nombreUsuario = jtxtNombre.getText();
+   u.contraseña = jtxtContraseña.getText();
 
+   if (u.nombreUsuario.isEmpty() || u.contraseña.isEmpty()) {
+    JOptionPane.showMessageDialog(null, "Algun campo está vacío");
+   } else if (u.nombreUsuario.equals("usuario") && u.contraseña.equals("contraseña")) {
+    JOptionPane.showMessageDialog(null, "¡Bienvenido!");
+    Administrador ad = new Administrador();
+    ad.setVisible(true);
+    this.dispose();
+    con.getConnection();
+}
+    }//GEN-LAST:event_BtnIngresarActionPerformed
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
